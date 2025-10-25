@@ -72,17 +72,14 @@ def show_pair_any_budha(idx=14, rectificar=True, num_lines=20, stereo_maps=None)
     plt.title(f"{titulo} - Par {idx}", fontsize=16)
     plt.axis("off")
     plt.show()
+
 def compute_depth(disparity_map, f, B, default=1000.0, min_disparity=1e-6):
     """Convierte un mapa de disparidad a distancias reales."""
-
     disparity_map = disparity_map.astype(np.float32, copy=True)
-
     mask_invalid = disparity_map <= min_disparity
-
     depth_map = np.full_like(disparity_map, default, dtype=np.float32)
     valid = ~mask_invalid
-
     if np.any(valid):
         depth_map[valid] = (f * B) / disparity_map[valid]
-
     return depth_map
+

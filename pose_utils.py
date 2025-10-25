@@ -248,14 +248,16 @@ def estimate_board_pose(
                 and count is not None
                 and count >= 4
             ):
+                rvec_init = np.zeros((3, 1), dtype=np.float64)
+                tvec_init = np.zeros((3, 1), dtype=np.float64)
                 ok, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(
-                    charucoCorners=charuco_corners,
-                    charucoIds=charuco_ids,
-                    board=board,
-                    cameraMatrix=camera_matrix,
-                    distCoeffs=dist_coeffs,
-                    rvec=np.empty(1),
-                    tvec=np.empty(1),
+                    charuco_corners.astype(np.float32),
+                    charuco_ids.astype(np.int32).reshape(-1, 1),
+                    board,
+                    camera_matrix,
+                    dist_coeffs,
+                    rvec_init,
+                    tvec_init,
                 )
                 if ok:
                     return PoseEstimationResult(
